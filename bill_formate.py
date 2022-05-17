@@ -21,7 +21,7 @@ class Bill:
         else:
             return total_parked_time*40
             
-    def display_bill_rates():
+    def display_bill_rates(self):
         l = [['upto 1hr','free','free'],['1-3 hrs','Rs.15 Per hr','Rs.25 Per hr'],['3-10 hrs','Rs.20 Per hr','Rs.35 Per hr'],['More than 10 hrs','Rs.35 Per hr','Rs.45 Per hr']]
         table = tabulate(l,headers=['timing','two wheeler','four wheeler'],tablefmt='orgtbl')
         print(table)
