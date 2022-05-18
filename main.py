@@ -53,7 +53,8 @@ def token_generator(Wheel_check,vehicle_number):
         TW[slot_booked[0]][slot_booked[1]] = vehicle_number
         print(TW[slot_booked[0]][slot_booked[1]])
         date_time = datetime.now()
-        new_data = {vehicle_number:{'booked slot':slot_booked,'Wheeler type':Wheel_check}}
+        Entry_time = date_time.strftime("%H:%M:%S")
+        new_data = {vehicle_number:{'date & time':str(date_time),'hour on parked':str(Entry_time),'booked slot':slot_booked,'Wheeler type':Wheel_check}}
         with open('data_stor.json') as f:
             data = json.load(f)
         data.update(new_data)
@@ -65,13 +66,21 @@ def token_generator(Wheel_check,vehicle_number):
         print(data)
         TW_table = tabulate(TW,headers=['s '+str(x) for x in range(mall.two_wheeler)],tablefmt='orgtbl')
         print(TW_table)
+
     if Wheel_check == '4':
         FW[slot_booked[0]][slot_booked[1]] = vehicle_number
+        print(FW[slot_booked[0]][slot_booked[1]])
         date_time = datetime.now()
-        data = {vehicle_number:{'booked slot':slot_booked,'date and time':date_time,'Wheeler type':Wheel_check}}
-        """ with open('date_stor.json','w') as f:
-            data_json = json.dumps(data,indent=2)
-            f.write(data_json) """ 
+        Entry_time = date_time.strftime("%H:%M:%S")
+        new_data = {vehicle_number:{'date & time':str(date_time),'Park time':str(Entry_time),'booked slot':slot_booked,'Wheeler type':Wheel_check}}
+        with open('data_stor.json') as f:
+            data = json.load(f)
+        data.update(new_data)
+
+        with open('data_stor.json','w') as f:
+            json.dump(data,f,indent=2)
+        """ message = f'this is your token on datetime {date_time} for vehicle type {Wheel_check} wheeler your slot is {slot_booked[0]} floor and {slot_booked[1]} slot'
+        print(message) """
         print(data)
         FW_table = tabulate(FW,headers=['s '+str(x) for x in range(mall.four_wheeler)],tablefmt='orgtbl')
         print(FW_table)
