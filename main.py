@@ -1,11 +1,10 @@
-from email import message
 from tabulate import tabulate
 from mall_architecture import mall_architecture
 from bill_formate import Bill
 from datetime import datetime
 import json
 from textwrap import indent
-import os
+
 
 def slot_avail(wheeler_check):
         if wheeler_check == '2':
@@ -35,8 +34,7 @@ def slot_provider(Wheel_check):
                     slot_for_TW = [i,j]
                     print(slot_for_TW)
                     return slot_for_TW
-                    
-    
+
     if Wheel_check == '4':
         for i in range(mall.four_wheeler):
             for j in range(mall.floor):
@@ -54,7 +52,7 @@ def token_generator(Wheel_check,vehicle_number):
         print(TW[slot_booked[0]][slot_booked[1]])
         date_time = datetime.now()
         Entry_time = date_time.strftime("%H:%M:%S")
-        new_data = {vehicle_number:{'date & time':str(date_time),'hour on parked':str(Entry_time),'booked slot':slot_booked,'Wheeler type':Wheel_check}}
+        new_data = {vehicle_number:{'date & time':str(date_time),'vehicle Park time':str(Entry_time),'booked slot':slot_booked,'Wheeler type':Wheel_check}}
         with open('data_stor.json') as f:
             data = json.load(f)
         data.update(new_data)
@@ -63,7 +61,7 @@ def token_generator(Wheel_check,vehicle_number):
             json.dump(data,f,indent=2)
         """ message = f'this is your token on datetime {date_time} for vehicle type {Wheel_check} wheeler your slot is {slot_booked[0]} floor and {slot_booked[1]} slot'
         print(message) """
-        print(data)
+        print(data[vehicle_number])
         TW_table = tabulate(TW,headers=['s '+str(x) for x in range(mall.two_wheeler)],tablefmt='orgtbl')
         print(TW_table)
 
@@ -72,7 +70,7 @@ def token_generator(Wheel_check,vehicle_number):
         print(FW[slot_booked[0]][slot_booked[1]])
         date_time = datetime.now()
         Entry_time = date_time.strftime("%H:%M:%S")
-        new_data = {vehicle_number:{'date & time':str(date_time),'Park time':str(Entry_time),'booked slot':slot_booked,'Wheeler type':Wheel_check}}
+        new_data = {vehicle_number:{'date & time':str(date_time),'vehicle Park time':str(Entry_time),'booked slot':slot_booked,'Wheeler type':Wheel_check}}
         with open('data_stor.json') as f:
             data = json.load(f)
         data.update(new_data)
@@ -81,9 +79,54 @@ def token_generator(Wheel_check,vehicle_number):
             json.dump(data,f,indent=2)
         """ message = f'this is your token on datetime {date_time} for vehicle type {Wheel_check} wheeler your slot is {slot_booked[0]} floor and {slot_booked[1]} slot'
         print(message) """
-        print(data)
+        print(data[vehicle_number])
         FW_table = tabulate(FW,headers=['s '+str(x) for x in range(mall.four_wheeler)],tablefmt='orgtbl')
         print(FW_table)
+
+
+def exit_lot(vehicle_number):
+    with open('data_stor.json','r') as f:
+        data = json.load(f)
+        vehicle_type = data[vehicle_number]['Wheeler type']
+        print(vehicle_type)
+        if vehicle_type == '2':
+            date_time = datetime.now()
+            exit_time = date_time.strftime("%H:%M:%S")
+            entrytime = data[vehicle_number]['vehicle Park time']
+            frmt = '%H:%M:%S'
+            total_parked_time = datetime.strptime(exit_time,frmt) - datetime.strptime(entrytime,frmt) 
+            hr = total_parked_time.seconds/3600
+            bill = Bill()
+            total_bill = bill.bill_2(hr)
+            msg = f'your bill is {total_bill} rupee'
+            print(msg)
+            data[vehicle_number].update({'exit time':exit_time,'total parked time':str(total_parked_time),'bill':str(total_bill)+' rupee'})
+            with open('data_stor.json','w') as f:
+                json.dump(data,f,indent=2)
+            TW[data[vehicle_number]['booked slot'][0]][data[vehicle_number]['booked slot'][1]] = 0
+            TW_table = tabulate(TW,headers=['s '+str(x) for x in range(mall.two_wheeler)],tablefmt='orgtbl')
+            print(TW_table)
+
+        if vehicle_type == 4:
+            date_time = datetime.now()
+            exit_time = date_time.strftime("%H:%M:%S")
+            entrytime = data[vehicle_number]['vehicle Park time']
+            frmt = '%H:%M:%S'
+            total_parked_time = datetime.strptime(exit_time,frmt) - datetime.strptime(entrytime,frmt) 
+            hr = total_parked_time.seconds/3600
+            bill = Bill()
+            total_bill = bill.bill_4(hr)
+            msg = f'your bill is {total_bill} rupee'
+            print(msg)
+            data[vehicle_number].update({'exit time':exit_time,'total parked time':str(total_parked_time),'bill':str(total_bill)+' rupee'})
+            with open('data_stor.json','w') as f:
+                json.dump(data,f,indent=2)
+            
+            msg = f'your bill is {total_bill} rupee'
+            print(msg)
+            FW[data[vehicle_number]['booked slot'][0]][data[vehicle_number]['booked slot'][1]] = 0
+            FW_table = tabulate(FW,headers=['s '+str(x) for x in range(mall.four_wheeler)],tablefmt='orgtbl')
+            print(FW_table)
 
 mall = mall_architecture()
 
@@ -116,20 +159,20 @@ while True:
             print("vehicle is two wheeler or four")
             Wheel_check = input("Enter 2 for two wheeler and 4 for four wheeler:")
             if slot_avail(Wheel_check)>0:
-                park_confirm = input("Do you wanna park your vehicle ?(y/eny key to cancle):")
+                park_confirm = input("Do you wanna park your vehicle ?(y/any key to cancle):")
                 if park_confirm == 'y':
                     vehicle_number = input("enter your vehicle number : ")
                     token_generator(Wheel_check,vehicle_number)
-                    
-            
+
             else:
                 print("no slot available")
             
-            
-            """ print(TW[0][1])
-            TW_table = tabulate(TW,headers=['s '+str(x) for x in range(mall.two_wheeler)],tablefmt='orgtbl')
-            print(TW_table) """
         elif choice == 'E':
+            exit_confirm = input("Do you wanna exit?(y/any key to cancle):")
+            if exit_confirm == 'y':
+                vehicle_number = input("enter your vehicle number : ")
+                exit_lot(vehicle_number)
+                print('done')
             pass
 
 

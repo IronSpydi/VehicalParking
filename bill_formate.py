@@ -1,7 +1,7 @@
 from tabulate import tabulate
 class Bill:
 
-    def bill_2(total_parked_time):
+    def bill_2(self,total_parked_time):
         if(total_parked_time>0 and total_parked_time<=1):
             return 0
         elif(total_parked_time>1 and total_parked_time<=3):
@@ -11,7 +11,7 @@ class Bill:
         else:
             return total_parked_time*30
 
-    def bill_4(total_parked_time):
+    def bill_4(self,total_parked_time):
         if(total_parked_time>0 and total_parked_time<=1):
             return 0
         elif(total_parked_time>1 and total_parked_time<=3):
