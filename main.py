@@ -86,7 +86,6 @@ def exit_lot(vehicle_number):
     with open('data_stor.json','r') as f:
         data = json.load(f)
         vehicle_type = data[vehicle_number]['Wheeler type']
-        print(vehicle_type)
         if vehicle_type == '2':
             date_time = datetime.now()
             exit_time = date_time.strftime("%H:%M:%S")
@@ -158,7 +157,13 @@ while True:
                 park_confirm = input("Do you wanna park your vehicle ?(y/any key to cancle):")
                 if park_confirm == 'y':
                     vehicle_number = input("enter your vehicle number : ")
-                    token_generator(Wheel_check,vehicle_number)
+                    with open('data_stor.json','r') as f:
+                        data = json.load(f)
+                        if vehicle_number not in data:
+                            token_generator(Wheel_check,vehicle_number)
+                        else:
+                            print("this numbers vehicle is already parked please enter your right vehicle number")
+                    
             else:
                 print("no slot available")
             
