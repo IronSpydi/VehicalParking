@@ -1,14 +1,11 @@
 {
   "123": {
-    "date & time": "2022-05-18 14:15:35.626082",
-    "vehicle Park time": "14:15:35",
+    "date & time": "2022-05-18 14:39:12.069123",
+    "vehicle Park time": "14:39:12",
     "booked slot": [
       0,
       0
     ],
-    "Wheeler type": "2",
-    "exit time": "14:15:39",
-    "total parked time": "0:00:04",
-    "bill": "0rupee"
+    "Wheeler type": "2"
   }
 }

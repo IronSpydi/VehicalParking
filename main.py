@@ -39,8 +39,7 @@ def slot_provider(Wheel_check):
         for i in range(mall.four_wheeler):
             for j in range(mall.floor):
                 if FW[i][j] == 0:
-                    slot_for_FW = [i,j]
-                    
+                    slot_for_FW = [i,j]  
                     return slot_for_FW
 
 
@@ -77,8 +76,7 @@ def token_generator(Wheel_check,vehicle_number):
 
         with open('data_stor.json','w') as f:
             json.dump(data,f,indent=2)
-        """ message = f'this is your token on datetime {date_time} for vehicle type {Wheel_check} wheeler your slot is {slot_booked[0]} floor and {slot_booked[1]} slot'
-        print(message) """
+
         print(data[vehicle_number])
         FW_table = tabulate(FW,headers=['s '+str(x) for x in range(mall.four_wheeler)],tablefmt='orgtbl')
         print(FW_table)
@@ -106,8 +104,8 @@ def exit_lot(vehicle_number):
             TW[data[vehicle_number]['booked slot'][0]][data[vehicle_number]['booked slot'][1]] = 0
             TW_table = tabulate(TW,headers=['s '+str(x) for x in range(mall.two_wheeler)],tablefmt='orgtbl')
             print(TW_table)
-
-        if vehicle_type == 4:
+        
+        if vehicle_type == '4':
             date_time = datetime.now()
             exit_time = date_time.strftime("%H:%M:%S")
             entrytime = data[vehicle_number]['vehicle Park time']
@@ -121,9 +119,7 @@ def exit_lot(vehicle_number):
             data[vehicle_number].update({'exit time':exit_time,'total parked time':str(total_parked_time),'bill':str(total_bill)+' rupee'})
             with open('data_stor.json','w') as f:
                 json.dump(data,f,indent=2)
-            
-            msg = f'your bill is {total_bill} rupee'
-            print(msg)
+
             FW[data[vehicle_number]['booked slot'][0]][data[vehicle_number]['booked slot'][1]] = 0
             FW_table = tabulate(FW,headers=['s '+str(x) for x in range(mall.four_wheeler)],tablefmt='orgtbl')
             print(FW_table)
@@ -163,7 +159,6 @@ while True:
                 if park_confirm == 'y':
                     vehicle_number = input("enter your vehicle number : ")
                     token_generator(Wheel_check,vehicle_number)
-
             else:
                 print("no slot available")
             
@@ -171,9 +166,13 @@ while True:
             exit_confirm = input("Do you wanna exit?(y/any key to cancle):")
             if exit_confirm == 'y':
                 vehicle_number = input("enter your vehicle number : ")
-                exit_lot(vehicle_number)
-                print('done')
-            pass
+                with open('data_stor.json','r') as f:
+                    data = json.load(f)
+                    if vehicle_number in data:
+                        exit_lot(vehicle_number)
+                        print('done')
+                    else:
+                        print('please enter right vehicle number')
 
 
         elif choice == 'DR':
