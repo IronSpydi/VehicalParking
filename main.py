@@ -1,5 +1,5 @@
 from tabulate import tabulate
-from mall_architecture import mall_architecture
+from mall_parking_architecture import mall_parking_architecture
 from bill_formate import Bill
 from datetime import datetime
 import json
@@ -29,7 +29,7 @@ def slot_avail(wheeler_check):
 def slot_provider(Wheel_check):
     if Wheel_check == '2':
         for i in range(mall.two_wheeler):
-            for j in range(mall.floor):
+            for j in range(mall.floor_2):
                 if TW[i][j] == 0:
                     slot_for_TW = [i,j]
                     print(slot_for_TW)
@@ -37,7 +37,7 @@ def slot_provider(Wheel_check):
 
     if Wheel_check == '4':
         for i in range(mall.four_wheeler):
-            for j in range(mall.floor):
+            for j in range(mall.floor_4):
                 if FW[i][j] == 0:
                     slot_for_FW = [i,j]  
                     return slot_for_FW
@@ -123,10 +123,10 @@ def exit_lot(vehicle_number):
             FW_table = tabulate(FW,headers=['s '+str(x) for x in range(mall.four_wheeler)],tablefmt='orgtbl')
             print(FW_table)
 
-mall = mall_architecture()
+mall = mall_parking_architecture()
 
-TW = [[0 for i in range(mall.two_wheeler)] for j in range(mall.floor)]
-FW = [[0 for i in range(mall.four_wheeler)] for j in range(mall.floor)]
+TW = [[0 for i in range(mall.two_wheeler)] for j in range(mall.floor_2)]
+FW = [[0 for i in range(mall.four_wheeler)] for j in range(mall.floor_4)]
 TW_table = tabulate(TW,headers=['s '+str(x) for x in range(mall.two_wheeler)],tablefmt='orgtbl')
 FW_table = tabulate(FW,headers=['s '+str(x) for x in range(mall.four_wheeler)],tablefmt='orgtbl')
 print("parking display for two wheelers\n")

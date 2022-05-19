@@ -1,26 +1,14 @@
 {
   "123": {
-    "date & time": "2022-05-18 15:09:39.634664",
-    "vehicle Park time": "15:09:39",
+    "date & time": "2022-05-19 11:08:39.138045",
+    "vehicle Park time": "11:08:39",
     "booked slot": [
       0,
       0
     ],
     "Wheeler type": "2",
-    "exit time": "15:09:59",
-    "total parked time": "0:00:20",
-    "bill": "0 rupee"
-  },
-  "234": {
-    "date & time": "2022-05-18 15:10:27.011413",
-    "vehicle Park time": "15:10:27",
-    "booked slot": [
-      0,
-      0
-    ],
-    "Wheeler type": "4",
-    "exit time": "15:10:37",
-    "total parked time": "0:00:10",
+    "exit time": "11:08:56",
+    "total parked time": "0:00:17",
     "bill": "0 rupee"
   }
 }
